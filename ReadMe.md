@@ -1,4 +1,4 @@
-# CPSC-1517 - **Workbook** (Jan 2020)
+# CPSC-1517 - **Workbook** (Jan 2022)
 
 This repository is a **Workbook Template Repository** (click the green *Use this template* button above) containing demos, tutorials, and practice materials. You can find a list of the materials in the [**src folder**](./src/ReadMe.md).
 

@@ -11,7 +11,7 @@ namespace Car_Object_Example
         private string _make = null!;
         private string _model = null!;
         public string Engine { get; set; }
-        public string Transmission { get; set; }
+        public Transmission Transmission { get; set; }
 
         public string Make
         {
@@ -45,12 +45,17 @@ namespace Car_Object_Example
             }
         }
 
-        public Car(string make, string model, string engine, string transmission)
+        public Car(string make, string model, string engine, Transmission transmission)
         {
             Make = make;
             Model = model;
             Engine = engine;
             Transmission = transmission;
+        }
+
+        public string Honk()
+        {
+            return "Beep";
         }
 
         public override string ToString()

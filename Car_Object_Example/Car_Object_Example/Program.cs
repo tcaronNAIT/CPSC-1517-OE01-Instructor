@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 int menuOption;
 List<Car> cars = new List<Car>();
-string make, model, engine, transmission;
 
 do
 {
@@ -26,5 +25,30 @@ do
         }
     } while (menuOption > 5 || menuOption <= 0);
 
+    switch(menuOption)
+    {
+        case 1:
+            Car myCar = CreateCar();
+            break;
+    }
 
 } while(menuOption != 5);
+
+Car CreateCar()
+{
+    string make, model, engine, transmission;
+    Car myCar = null;
+    bool isError = false;
+
+    try
+    {
+        make = Helper.GetSafeString("Enter the make of the car >> ");
+        model = Helper.GetSafeString("Enter the model of the car >> ");
+    }
+    catch (Exception ex)
+    {
+
+    }
+
+    return myCar;
+}

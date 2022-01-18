@@ -8,7 +8,7 @@ namespace Car_Object_Example
 {
     internal class Helper
     {
-        public static int GetSafeInt(string prompt)
+        internal static int GetSafeInt(string prompt)
         {
             int safeInt;
             bool isValid = false;
@@ -28,6 +28,24 @@ namespace Car_Object_Example
             } while (!isValid);
 
             return safeInt;
+        }
+
+        internal static string GetSafeString(string prompt)
+        {
+            string safeString;
+
+            do
+            {
+                Console.Write(prompt);
+                safeString = Console.ReadLine().Trim();
+                if (safeString.Length <= 0)
+                {
+                    Console.WriteLine("ERROR: Must provide a value.");
+                    Console.WriteLine();
+                }
+            } while (safeString.Length <= 0);
+
+            return safeString;
         }
     }
 }

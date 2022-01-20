@@ -43,9 +43,31 @@ namespace Car_Object_Example
                     Console.WriteLine("ERROR: Must provide a value.");
                     Console.WriteLine();
                 }
-            } while (safeString.Length <= 0);
+            } while (string.IsNullOrWhiteSpace(safeString));
 
             return safeString;
+        }
+
+        internal static double GetSafeDouble(string prompt)
+        {
+            double safeDouble;
+            bool isValid = false;
+
+            do
+            {
+                Console.Write(prompt);
+                if (double.TryParse(Console.ReadLine(), out safeDouble))
+                {
+                    isValid = true;
+                }
+                else
+                {
+                    Console.WriteLine("ERROR: Must provide a number.");
+                    Console.WriteLine();
+                }
+            } while (!isValid);
+
+            return safeDouble;
         }
     }
 }

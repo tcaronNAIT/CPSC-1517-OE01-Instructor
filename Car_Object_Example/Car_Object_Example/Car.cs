@@ -10,7 +10,7 @@ namespace Car_Object_Example
     {
         private string _make = null!;
         private string _model = null!;
-        public string Engine { get; set; }
+        public Engine Engine { get; set; }
         public Transmission Transmission { get; set; }
 
         public string Make
@@ -45,7 +45,7 @@ namespace Car_Object_Example
             }
         }
 
-        public Car(string make, string model, string engine, Transmission transmission)
+        public Car(string make, string model, Engine engine, Transmission transmission)
         {
             Make = make;
             Model = model;

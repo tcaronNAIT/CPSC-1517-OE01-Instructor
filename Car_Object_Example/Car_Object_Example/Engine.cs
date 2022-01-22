@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Car_Object_Example
 {
-    internal class Engine
+    public class Engine
     {
         //Size (double) must be greater then or equal to 0.5
         //Horsepower (int) must be greater than 0
@@ -22,7 +22,7 @@ namespace Car_Object_Example
         public double Size
         {
             get { return _size; }
-            private set
+            set
             {
                 if(value >= 0.5)
                 {
@@ -30,7 +30,7 @@ namespace Car_Object_Example
                 }
                 else
                 {
-                    throw new Exception("Invalid engine size");
+                    throw new ArgumentOutOfRangeException("Size", value, "Invalid engine size");
                 }
             }
         }
@@ -38,7 +38,7 @@ namespace Car_Object_Example
         public int HorsePower
         {
             get { return _horsepower; }
-            private set
+            set
             {
                 if (value >= 0)
                 {
@@ -46,7 +46,7 @@ namespace Car_Object_Example
                 }
                 else
                 {
-                    throw new Exception("Invalid engine horsepower");
+                    throw new ArgumentOutOfRangeException("HorsePower", value, "Invalid engine horsepower");
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace Car_Object_Example
         public int Cylinders
         {
             get { return _cylinders; }
-            private set
+            set
             {
                 if (value >= 4 && value <= 10 && value % 2 == 0 || value == 0)
                 {
@@ -62,7 +62,7 @@ namespace Car_Object_Example
                 }
                 else
                 {
-                    throw new Exception("Invalid engine cylinders");
+                    throw new ArgumentOutOfRangeException("Cyclinders", value, "Invalid engine cylinders");
                 }
             }
         }

@@ -18,14 +18,15 @@ namespace Car_Object_Example
             get { return _make; }
             set
             {
-                if(value.Trim().Length >= 2)
+                if(value.Trim().Length <= 0)
                 {
-                    _make = value.Trim();
+                    throw new ArgumentNullException("Make", "Make is not specified or is empty.");
                 }
-                else
+                if (value.Trim().Length < 2 && value.Trim().Length > 0)
                 {
-                    throw new Exception("Invalid car make.");
+                    throw new ArgumentOutOfRangeException("Make", value, "Make cannot be less than 2 characters long.");
                 }
+                _make = value.Trim();
             }
         }
 
@@ -34,14 +35,15 @@ namespace Car_Object_Example
             get { return _model; }
             set
             {
-                if (value.Trim().Length >= 2)
+                if (value.Trim().Length <= 0)
                 {
-                    _model = value.Trim();
+                    throw new ArgumentNullException("Model", "Model is not specified or is empty.");
                 }
-                else
+                if (value.Trim().Length < 2 && value.Trim().Length > 0)
                 {
-                    throw new Exception("Invalid car model.");
+                    throw new ArgumentOutOfRangeException("Model", value, "Model cannot be less than 2 characters long.");
                 }
+                _model = value.Trim();
             }
         }
 

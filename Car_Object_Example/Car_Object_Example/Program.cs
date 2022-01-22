@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 // Make a menu to create a car, update a car, delete a car, display a car's information, exit.
 
-int menuOption;
+int menuOption, carOption;
 List<Car> cars = new List<Car>();
 
 do
@@ -29,12 +29,70 @@ do
     {
         case 1:
             Car myCar = CreateCar();
-            cars.Add(myCar);
-            Console.WriteLine("Car Created");
+            if (myCar != null)
+            {
+                cars.Add(myCar);
+                Console.WriteLine("Car Created");
+            }
+            else
+            {
+                Console.WriteLine("Car was not create, please try again.");
+            }
+            break;
+        case 2:
+            if (cars.Count > 0)
+            {
+                carOption = DisplayCarMenu(cars);
+                //Update the selected car? and what to update (make and model/engine info/transmission info)
+                //Allow them to update just the option selected
+            }
+            else
+            {
+                Console.WriteLine("No cars to display.");
+            }
+            break;
+        case 3:
+            if (cars.Count > 0)
+            {
+                carOption = DisplayCarMenu(cars);
+                cars.RemoveAt(carOption - 1);
+            }
+            else
+            {
+                Console.WriteLine("No cars to display.");
+            }
+            break;
+        case 4:
+            if (cars.Count > 0)
+            {
+                carOption = DisplayCarMenu(cars);
+                Console.WriteLine(cars[carOption - 1].ToString());
+            }
+            else
+            {
+                Console.WriteLine("No cars to display.");
+            }
             break;
     }
 
 } while(menuOption != 5);
+
+static int DisplayCarMenu(List<Car> cars)
+{
+    int carOption, option = 1;
+
+    Console.WriteLine("Select a car:");
+    foreach(Car car in cars)
+    {
+        Console.WriteLine($"\t{option}. {car.Model} {car.Make}");
+    }
+    do
+    {
+        carOption = Helper.GetSafeInt("Option >> ");
+    } while (carOption <= 0 || carOption > cars.Count);
+
+    return carOption;
+}
 
 Car CreateCar()
 {
@@ -42,7 +100,6 @@ Car CreateCar()
     Engine engine;
     Transmission transmission;
     Car myCar = null!;
-    bool isError = false;
 
     try
     {
@@ -57,6 +114,14 @@ Car CreateCar()
         Console.WriteLine();
 
         myCar = new Car(make, model, engine, transmission);
+    }
+    catch (ArgumentOutOfRangeException aor)
+    {
+        Console.WriteLine(aor.Message);
+    }
+    catch(ArgumentNullException ane)
+    {
+        Console.WriteLine(ane.Message);
     }
     catch (Exception ex)
     {

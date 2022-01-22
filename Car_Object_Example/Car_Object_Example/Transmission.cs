@@ -35,7 +35,7 @@ namespace Car_Object_Example
                 }
                 else
                 {
-                    throw new Exception("Invalid tranmission gears.");
+                    throw new ArgumentOutOfRangeException("Gears", value, "ERROR: Gears must be between 2 and 12.");
                 }
             }
         }

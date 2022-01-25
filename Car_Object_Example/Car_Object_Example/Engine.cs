@@ -30,7 +30,7 @@ namespace Car_Object_Example
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException("Size", value, "Invalid engine size");
+                    throw new ArgumentOutOfRangeException("Size", value, "Size must be greater than 0.5.");
                 }
             }
         }
@@ -46,7 +46,7 @@ namespace Car_Object_Example
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException("HorsePower", value, "Invalid engine horsepower");
+                    throw new ArgumentOutOfRangeException("HorsePower", value, "Horsepower must be a positive number.");
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace Car_Object_Example
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException("Cyclinders", value, "Invalid engine cylinders");
+                    throw new ArgumentOutOfRangeException("Cyclinders", value, "Cyclinders must be between 4 and 10 and divisible by 2 or 0.");
                 }
             }
         }
@@ -73,6 +73,11 @@ namespace Car_Object_Example
             Size = size;
             HorsePower = horsePower;
             Cylinders = cylinders;
+        }
+
+        public Engine()
+        {
+
         }
 
         public override string ToString()

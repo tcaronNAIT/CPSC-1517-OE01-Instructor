@@ -30,6 +30,35 @@ namespace Car_Object_Example
             return safeInt;
         }
 
+        internal static int GetSafeInt(string prompt, int min, int max)
+        {
+            int safeInt;
+            bool isValid = false;
+
+            do
+            {
+                Console.Write(prompt);
+                if (int.TryParse(Console.ReadLine(), out safeInt))
+                {
+                    if (safeInt >= min && safeInt <= max)
+                    {
+                        isValid = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"ERROR: Must provide a whole number between {min} and {max}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("ERROR: Must provide a whole number.");
+                    Console.WriteLine();
+                }
+            } while (!isValid);
+
+            return safeInt;
+        }
+
         internal static string GetSafeString(string prompt)
         {
             string safeString;

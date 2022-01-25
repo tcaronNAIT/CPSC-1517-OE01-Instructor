@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 
 // Make a menu to create a car, update a car, delete a car, display a car's information, exit.
+const string FILE_PATH = @"C:\ClassExamples\CarList.txt";
 
 int menuOption, carOption;
-List<Car> cars = new List<Car>();
+List<Vehicle> cars = ReadList();
 
 do
 {
@@ -15,20 +16,12 @@ do
     Console.WriteLine("\t4. Display Car");
     Console.WriteLine("\t5. Exit");
 
-    do
-    {
-        menuOption = Helper.GetSafeInt("Option >> ");
-        if(menuOption > 5 || menuOption <= 0)
-        {
-            Console.WriteLine("ERROR: Invalid Option.");
-            Console.WriteLine();
-        }
-    } while (menuOption > 5 || menuOption <= 0);
+    menuOption = Helper.GetSafeInt("Option >> ", 1, 5);
 
     switch(menuOption)
     {
         case 1:
-            Car myCar = CreateCar();
+            Vehicle myCar = CreateCar();
             if (myCar != null)
             {
                 cars.Add(myCar);
@@ -42,9 +35,7 @@ do
         case 2:
             if (cars.Count > 0)
             {
-                carOption = DisplayCarMenu(cars);
-                //Update the selected car? and what to update (make and model/engine info/transmission info)
-                //Allow them to update just the option selected
+                UpdateCar(cars);
             }
             else
             {
@@ -73,33 +64,89 @@ do
                 Console.WriteLine("No cars to display.");
             }
             break;
+        default:
+            if (cars.Count > 0)
+            {
+                SaveList(cars);
+                Console.WriteLine("List saved, goodbye");
+            }
+            break;
     }
 
 } while(menuOption != 5);
 
-static int DisplayCarMenu(List<Car> cars)
+static void SaveList(List<Vehicle> cars)
+{
+    try
+    {
+        using (StreamWriter writer = new StreamWriter(FILE_PATH))
+        {
+            foreach(Vehicle car in cars)
+            {
+                writer.WriteLine($"{car.Make}|{car.Model}|{car.Engine.Size}|{car.Engine.HorsePower}|{car.Engine.Cylinders}|{car.Transmission.Type}|{car.Transmission.Gears}");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"File save failed for {FILE_PATH} \n\n {ex.Message}");
+        Console.WriteLine();
+    }
+}
+
+static List<Vehicle> ReadList()
+{
+    List<Vehicle> cars = new List<Vehicle>();
+    string make, model;
+    Engine engine;
+    Transmission transmission;
+
+    if (File.Exists(FILE_PATH))
+    {
+        StreamReader reader = new StreamReader(FILE_PATH);
+
+        try
+        {
+            string line = "";
+            while((line = reader.ReadLine()) != null)
+            {
+                string[] splitLine = line.Split('|');
+                make = splitLine[0];
+                model = splitLine[1];
+                engine = new Engine(double.Parse(splitLine[2]), int.Parse(splitLine[3]), int.Parse(splitLine[4]));
+                //transmission = new Transmission(Transmission.TypeName.splitLine[5], int.Parse(splitLine[6]));
+                //finish next class
+            }
+        }
+        catch(Exception ex)
+        {
+
+        }
+    }
+}
+
+static int DisplayCarMenu(List<Vehicle> cars)
 {
     int carOption, option = 1;
 
     Console.WriteLine("Select a car:");
-    foreach(Car car in cars)
+    foreach(Vehicle car in cars)
     {
         Console.WriteLine($"\t{option}. {car.Model} {car.Make}");
+        option++;
     }
-    do
-    {
-        carOption = Helper.GetSafeInt("Option >> ");
-    } while (carOption <= 0 || carOption > cars.Count);
+    carOption = Helper.GetSafeInt("Option >> ", 1, cars.Count);
+
 
     return carOption;
 }
 
-Car CreateCar()
+static Vehicle CreateCar()
 {
     string make, model;
     Engine engine;
     Transmission transmission;
-    Car myCar = null!;
+    Vehicle myCar = null!;
 
     try
     {
@@ -113,7 +160,7 @@ Car CreateCar()
         transmission = GetTransmission();
         Console.WriteLine();
 
-        myCar = new Car(make, model, engine, transmission);
+        myCar = new Vehicle(make, model, engine, transmission);
     }
     catch (ArgumentOutOfRangeException aor)
     {
@@ -131,7 +178,7 @@ Car CreateCar()
     return myCar;
 }
 
-Transmission GetTransmission()
+static Transmission GetTransmission()
 {
     Transmission transmission;
     int gears, type;
@@ -143,7 +190,7 @@ Transmission GetTransmission()
     return transmission;
 }
 
-int GetTransmissionType()
+static int GetTransmissionType()
 {
     bool isValid = false;
     int option;
@@ -175,7 +222,52 @@ int GetTransmissionType()
     return option - 1;
 }
 
-Engine GetEngine()
+static void UpdateCar(List<Vehicle> cars)
+{
+    string make, model;
+    Engine engine;
+    Transmission transmission;
+    int carPart;
+    int carOption = DisplayCarMenu(cars);
+    carPart = SelectPart(cars[carOption - 1]);
+
+    switch (carPart)
+    {
+        case 1:
+            make = Helper.GetSafeString("Enter the make of the car >> ");
+            cars[carOption - 1].Make = make;
+            model = Helper.GetSafeString("Enter the model of the car >> ");
+            cars[carOption - 1].Model = model;
+            break;
+        case 2:
+            Console.WriteLine("Engine Specifications:");
+            engine = GetEngine();
+            cars[carOption - 1].Engine = engine;
+            break;
+        case 3:
+            Console.WriteLine("Transmoission Specifications");
+            transmission = GetTransmission();
+            cars[carOption - 1].Transmission = transmission;
+            break;
+        default:
+            Console.WriteLine("Incorrect selection.");
+            break;
+    }
+}
+
+
+
+static int SelectPart(Vehicle car)
+{
+    Console.WriteLine(car.ToString());
+    Console.WriteLine("Select the part you want to update.");
+    Console.WriteLine("1. Model and Make of Car");
+    Console.WriteLine("2. Transmission");
+    Console.WriteLine("3. Engine");
+    return Helper.GetSafeInt("Enter the car part from the options which you want to update >> ",1,3);
+}
+
+static Engine GetEngine()
 {
     Engine engine;
     int cyclinders, horsepower;

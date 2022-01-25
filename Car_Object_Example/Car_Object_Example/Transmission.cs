@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Car_Object_Example
 {
-    internal class Transmission
+    public class Transmission
     {
         //enum
         public enum TypeName
@@ -44,6 +44,11 @@ namespace Car_Object_Example
         {
             Type = type;
             Gears = gears;
+        }
+        
+        public Transmission()
+        {
+
         }
 
         public override string ToString()

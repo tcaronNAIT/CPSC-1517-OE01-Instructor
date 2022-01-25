@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Car_Object_Example
 {
-    internal class Car
+    public class Vehicle
     {
         private string _make = null!;
         private string _model = null!;
@@ -47,7 +47,22 @@ namespace Car_Object_Example
             }
         }
 
-        public Car(string make, string model, Engine engine, Transmission transmission)
+        public double TowingCapacity
+        {
+            get { return Engine.Size * 100; }
+        }
+
+        public bool IsFord
+        {
+            get { return Make == "Ford"; }
+        }
+
+        public int Doors
+        {
+            get; private set;
+        }
+
+        public Vehicle(string make, string model, Engine engine, Transmission transmission)
         {
             Make = make;
             Model = model;
@@ -55,9 +70,27 @@ namespace Car_Object_Example
             Transmission = transmission;
         }
 
+        public Vehicle()
+        {
+            Engine = new Engine();
+            Transmission = new Transmission();
+        }
+
         public string Honk()
         {
             return "Beep";
+        }
+
+        public void SetDoors(int doors)
+        {
+            if(doors == 0)
+            {
+                throw new ArgumentOutOfRangeException("doors", doors, "You need doors!");
+            }
+            else
+            {
+                Doors = doors;
+            }
         }
 
         public override string ToString()

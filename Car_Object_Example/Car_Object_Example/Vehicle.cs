@@ -76,6 +76,18 @@ namespace Car_Object_Example
             Transmission = new Transmission();
         }
 
+        public void SetDoor(int Doors)
+        {
+            if(Doors >= 1)
+            {
+                this.Doors = Doors;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Doors", Doors, "A vehicle must have at least one door.");
+            }
+        }
+
         public string Honk()
         {
             return "Beep";

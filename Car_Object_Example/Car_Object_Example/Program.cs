@@ -18,7 +18,7 @@ do
 
     menuOption = Helper.GetSafeInt("Option >> ", 1, 5);
 
-    switch(menuOption)
+    switch (menuOption)
     {
         case 1:
             Vehicle myCar = CreateCar();
@@ -68,20 +68,21 @@ do
             if (cars.Count > 0)
             {
                 SaveList(cars);
-                Console.WriteLine("List saved, goodbye");
+                Console.WriteLine("All vehicles saved, goodbye");
             }
             break;
     }
 
-} while(menuOption != 5);
+} while (menuOption != 5);
 
 static void SaveList(List<Vehicle> cars)
 {
     try
     {
+        //using statement method, no need to close StreamWriter, it is automatically closed for you.
         using (StreamWriter writer = new StreamWriter(FILE_PATH))
         {
-            foreach(Vehicle car in cars)
+            foreach (Vehicle car in cars)
             {
                 writer.WriteLine($"{car.Make}|{car.Model}|{car.Engine.Size}|{car.Engine.HorsePower}|{car.Engine.Cylinders}|{car.Transmission.Type}|{car.Transmission.Gears}");
             }
@@ -92,6 +93,32 @@ static void SaveList(List<Vehicle> cars)
         Console.WriteLine($"File save failed for {FILE_PATH} \n\n {ex.Message}");
         Console.WriteLine();
     }
+
+    //Without using, we must make sure we close the StreamWriter, or our file will never write (basically it does not save).
+    /*if(File.Exists(FILE_PATH))
+    {
+        StreamWriter writer = new StreamWriter(FILE_PATH);
+        try
+        {
+
+            foreach (Vehicle car in cars)
+            {
+                writer.WriteLine($"{car.Make}|{car.Model}|{car.Engine.Size}|{car.Engine.HorsePower}|{car.Engine.Cylinders}|{car.Transmission.Type}|{car.Transmission.Gears}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("ERROR: File could not be written.");
+        }
+        finally
+        {
+            writer.Close();
+        }
+    }
+    else
+    {
+        Console.WriteLine($"File save failed for {FILE_PATH} \n\n {ex.Message}");
+    }*/
 }
 
 static List<Vehicle> ReadList()
@@ -108,21 +135,33 @@ static List<Vehicle> ReadList()
         try
         {
             string line = "";
-            while((line = reader.ReadLine()) != null)
+            while ((line = reader.ReadLine()) != null)
             {
                 string[] splitLine = line.Split('|');
                 make = splitLine[0];
                 model = splitLine[1];
                 engine = new Engine(double.Parse(splitLine[2]), int.Parse(splitLine[3]), int.Parse(splitLine[4]));
-                //transmission = new Transmission(Transmission.TypeName.splitLine[5], int.Parse(splitLine[6]));
-                //finish next class
+                transmission = new Transmission((Transmission.TypeName)Enum.Parse(typeof(Transmission.TypeName), splitLine[5]), int.Parse(splitLine[6]));
+                cars.Add(new Vehicle(make, model, engine, transmission));
+                //cars.Add(new Vehicle(splitLine[0], splitLine[1], new Engine(double.Parse(splitLine[2]), int.Parse(splitLine[3]), int.Parse(splitLine[4])), new Transmission((Transmission.TypeName)Enum.Parse(typeof(Transmission.TypeName), splitLine[5]), int.Parse(splitLine[6])));
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-
+            Console.WriteLine($"ERROR: File could not be read due to an exception: \n {ex.Message}");
+        }
+        finally
+        {
+            reader.Close();
         }
     }
+    else
+    {
+        File.Create(FILE_PATH).Close();
+        Console.WriteLine($"ERROR: File did not exist, file {FILE_PATH} was created.");
+    }
+
+    return cars;
 }
 
 static int DisplayCarMenu(List<Vehicle> cars)
@@ -130,9 +169,9 @@ static int DisplayCarMenu(List<Vehicle> cars)
     int carOption, option = 1;
 
     Console.WriteLine("Select a car:");
-    foreach(Vehicle car in cars)
+    foreach (Vehicle car in cars)
     {
-        Console.WriteLine($"\t{option}. {car.Model} {car.Make}");
+        Console.WriteLine($"\t{option}. {car.Make} {car.Model}");
         option++;
     }
     carOption = Helper.GetSafeInt("Option >> ", 1, cars.Count);
@@ -166,7 +205,7 @@ static Vehicle CreateCar()
     {
         Console.WriteLine(aor.Message);
     }
-    catch(ArgumentNullException ane)
+    catch (ArgumentNullException ane)
     {
         Console.WriteLine(ane.Message);
     }
@@ -200,14 +239,14 @@ static int GetTransmissionType()
     {
         number = 1;
         Console.WriteLine("Select a Transmission Type:");
-        foreach(Transmission.TypeName typeString in Enum.GetValues(typeof(Transmission.TypeName)))
+        foreach (Transmission.TypeName typeString in Enum.GetValues(typeof(Transmission.TypeName)))
         {
             Console.WriteLine($"\t{number}. {typeString}");
             number++;
         }
 
         option = Helper.GetSafeInt("Option >> ");
-        if(option <= 0 || option > Enum.GetValues(typeof(Transmission.TypeName)).Length)
+        if (option <= 0 || option > Enum.GetValues(typeof(Transmission.TypeName)).Length)
         {
             Console.WriteLine($"ERROR: Invalid option, please choose between 1 and {Enum.GetNames(typeof(Transmission.TypeName)).Length}.");
             Console.WriteLine();
@@ -264,7 +303,7 @@ static int SelectPart(Vehicle car)
     Console.WriteLine("1. Model and Make of Car");
     Console.WriteLine("2. Transmission");
     Console.WriteLine("3. Engine");
-    return Helper.GetSafeInt("Enter the car part from the options which you want to update >> ",1,3);
+    return Helper.GetSafeInt("Enter the car part from the options which you want to update >> ", 1, 3);
 }
 
 static Engine GetEngine()
@@ -287,28 +326,28 @@ TestEngineClass();
 
 static void TestEngineClass()
 {
-    try
-    {
-        Engine newEngine;
+try
+{
+Engine newEngine;
 
-        //good engine
-        newEngine = new Engine(1.0, 24, 0);
-        Console.WriteLine("Engine with 0 cylinders works");
-        newEngine = new Engine(1.0, 24, 6);
-        Console.WriteLine("Engine with 6 cylinders works");
+//good engine
+newEngine = new Engine(1.0, 24, 0);
+Console.WriteLine("Engine with 0 cylinders works");
+newEngine = new Engine(1.0, 24, 6);
+Console.WriteLine("Engine with 6 cylinders works");
 
-        //bad engines
-        //Bad Size
-        //newEngine = new Engine(0, 24, 6);
-        //Negative Horsepower
-        //newEngine = new Engine(1.0, -1, 6);
-        //Bad Cylinders
-        //newEngine = new Engine(1.0, 24, 7);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine(ex.Message);
-    }
+//bad engines
+//Bad Size
+//newEngine = new Engine(0, 24, 6);
+//Negative Horsepower
+//newEngine = new Engine(1.0, -1, 6);
+//Bad Cylinders
+//newEngine = new Engine(1.0, 24, 7);
+}
+catch (Exception ex)
+{
+Console.WriteLine(ex.Message);
+}
 }
 */
 
@@ -323,3 +362,16 @@ foreach(int value in intArray)
 {
     Console.WriteLine($"The value is {value}");
 }*/
+
+//Casting Example
+/*
+double number = 1.0;
+
+int number1;
+
+//Parse will not work
+number1 = int.Parse(number);
+
+//Cast the value
+number1 = (int)number;
+*/

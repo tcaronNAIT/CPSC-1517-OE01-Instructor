@@ -105,6 +105,10 @@ namespace Car_Object_Example
             }
         }
 
+        public string FileWrite()
+        {
+            return $"{Make},{Model},{Engine.Size},{Engine.HorsePower},{Engine.Cylinders},{Transmission.Type},{Transmission.Gears}";
+        }
         public override string ToString()
         {
             //String.Format("{0} {1}\n{2}\n{3}", Make, Model, Engine, Transmission);

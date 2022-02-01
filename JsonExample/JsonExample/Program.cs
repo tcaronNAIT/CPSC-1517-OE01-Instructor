@@ -1,4 +1,5 @@
 ﻿using JsonExample;
+using System.Collections.Generic;
 using System.Text.Json;
 
 const string FILE_PATH = @"C:\ClassExamples\StudentList.txt";
@@ -6,7 +7,7 @@ const string FILE_PATH = @"C:\ClassExamples\StudentList.txt";
 List<Student> students = new List<Student>();
 students = ReadJson();
 
-/*Student studentBob = new Student("Bob", "Smith", "bob@test.ca", 1234567);
+Student studentBob = new Student("Bob", "Smith", "bob@test.ca", 1234567);
 
 Console.WriteLine($"{studentBob.FirstName} {studentBob.LastName}");
 
@@ -24,7 +25,7 @@ Class class2 = new Class("Intro to Database", "Learn about database", "DMIT1508"
 
 studentFred.AddClass(class2);
 
-students.Add(studentFred);*/
+students.Add(studentFred);
 
 Console.WriteLine(students[1].FirstName);
 
@@ -38,18 +39,32 @@ static void WriteJson(List<Student> students)
     };
 
     string studentJson = JsonSerializer.Serialize(students, options);
-
-    File.WriteAllText(FILE_PATH, studentJson);
-    Console.WriteLine("Students saved.");
+    try
+    {
+        File.WriteAllText(FILE_PATH, studentJson);
+        Console.WriteLine("Students saved.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error is writing to file: \n{ex.Message}");
+    }
 }
 
 static List<Student> ReadJson()
 {
+    List<Student> students = null!;
     //get the text from the file
-    string studentJson = File.ReadAllText(FILE_PATH);
-    //convert or deserialize the text back into students (into an instance of the class)
-    //this is broken, try and fix if you can!
-    List<Student> students = JsonSerializer.Deserialize<List<Student>>(studentJson);
+    try
+    {
+        string jsonString = File.ReadAllText(FILE_PATH);
+        //deserialize the objects 
+        students = JsonSerializer.Deserialize<List<Student>>(jsonString);
+    }
+    catch (Exception ex)
+    {
+        students = new List<Student>();
+        Console.WriteLine($"Error is reading file: \n{ex.Message}");
+    }
     return students;
 }
 

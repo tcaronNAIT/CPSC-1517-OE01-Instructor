@@ -84,7 +84,7 @@ static void SaveList(List<Vehicle> cars)
         {
             foreach (Vehicle car in cars)
             {
-                writer.WriteLine($"{car.Make}|{car.Model}|{car.Engine.Size}|{car.Engine.HorsePower}|{car.Engine.Cylinders}|{car.Transmission.Type}|{car.Transmission.Gears}");
+                writer.WriteLine(car.FileWrite());
             }
         }
     }
@@ -137,7 +137,7 @@ static List<Vehicle> ReadList()
             string line = "";
             while ((line = reader.ReadLine()) != null)
             {
-                string[] splitLine = line.Split('|');
+                string[] splitLine = line.Split(',');
                 make = splitLine[0];
                 model = splitLine[1];
                 engine = new Engine(double.Parse(splitLine[2]), int.Parse(splitLine[3]), int.Parse(splitLine[4]));

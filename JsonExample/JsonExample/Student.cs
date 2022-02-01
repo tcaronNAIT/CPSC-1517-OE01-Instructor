@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace JsonExample
@@ -13,12 +14,27 @@ namespace JsonExample
         private string _email = null!;
         private int _studentID;
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public int StudentID { get; set; }
-
-        public List<Class> ClassList { get; set; } = new();
+        public string FirstName
+        {
+            get { return _firstName; }
+            set { _firstName = value; }
+        }
+        public string LastName
+        {
+            get { return _lastName; }
+            set { _lastName = value; }
+        }
+        public string Email
+        {
+            get { return _email; }
+            set { _email = value; }
+        }
+        public int StudentID
+        {
+            get { return _studentID; }
+            set { _studentID = value; }
+        }
+        public List<Class> ClassList { get; set; } = null!;
 
         public Student(string firstName, string lastName, string email, int studentID)
         {

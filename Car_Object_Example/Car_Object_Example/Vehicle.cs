@@ -10,6 +10,10 @@ namespace Car_Object_Example
     {
         private string _make = null!;
         private string _model = null!;
+        //Ensure all wheels entries are positive numbers and less than or equal to 12
+        //Wheels must also be entered as even number except allow for the number 3
+        //If the vehicle has a Unicorn Transmission, only allow 4 wheels and if anything else is enter throw an error that starts with 'Unicorn Error - '
+        private int _wheels;
         public Engine Engine { get; set; }
         public Transmission Transmission { get; set; }
 
@@ -30,6 +34,22 @@ namespace Car_Object_Example
             }
         }
 
+        public int Wheels
+        { 
+            get { return _wheels; }
+            set
+            {
+                if (value < 0 || value > 12)
+                {
+                    throw new ArgumentOutOfRangeException("ERROR: Wheels must be positive and less than or equal to 12");
+                }
+                if (value % 2 != 0 && value != 3)
+                {
+                    throw new ArgumentOutOfRangeException("ERROR: Wheels must be even or 3");
+                }
+                _wheels = value;
+            }
+        }
         public string Model
         {
             get { return _model; }
@@ -62,12 +82,17 @@ namespace Car_Object_Example
             get; private set;
         }
 
-        public Vehicle(string make, string model, Engine engine, Transmission transmission)
+        public Vehicle(string make, string model, Engine engine, Transmission transmission, int wheels)
         {
+            if(transmission.Type == Transmission.TypeName.Unicorn && wheels != 4)
+            {
+                throw new Exception("Unicorn Error - Unicorn Transmissions must have 4 wheels.");
+            }
             Make = make;
             Model = model;
             Engine = engine;
             Transmission = transmission;
+            Wheels = wheels;
         }
 
         public Vehicle()

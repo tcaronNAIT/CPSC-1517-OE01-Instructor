@@ -323,7 +323,7 @@ using System.Collections.Generic;
 
 //Console.WriteLine("Engine Test");
 //TestEngineClass();
-Console.WriteLine("Vehicle Test");
+/*Console.WriteLine("Vehicle Test");
 TestVehicleClass();
 
 static void TestEngineClass()
@@ -395,7 +395,7 @@ static void TestVehicleClass()
     {
         Console.WriteLine(ex.Message);
     }
-}
+}*/
 
 /*int[] intArray = new int[4];
 
@@ -421,3 +421,37 @@ number1 = int.Parse(number);
 //Cast the value
 number1 = (int)number;
 */
+
+Vehicle myVehicle = new Vehicle("Honda", "Civic", new Engine(1.6, 120, 8), new Transmission(Transmission.TypeName.Standard,6), 4);
+
+Console.WriteLine(myVehicle.ToString());
+
+Vehicle ford, ford2, ford3; 
+bool test1 = Vehicle.TryParse("Ford,F-150,1.8,160,8,Standard,8,4", out ford);
+
+Console.WriteLine(ford.ToString());
+try
+{
+    bool test2 = Vehicle.TryParse("Ford,1.8,160,8,Standard,8,4", out ford2);
+}
+catch (FormatException ex)
+{
+    Console.WriteLine($"Format Exception: {ex.Message}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Exception: {ex.Message}");
+}
+
+try 
+{
+    bool test3 = Vehicle.TryParse("Ford,F-150,1.8,160,7,Standard,8,4", out ford3);
+}
+catch (FormatException ex)
+{
+    Console.WriteLine($"Format Exception: {ex.Message}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Exception: {ex.Message}");
+}

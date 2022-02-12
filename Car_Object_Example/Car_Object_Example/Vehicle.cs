@@ -8,6 +8,7 @@ namespace Car_Object_Example
 {
     public class Vehicle
     {
+        //Private Fields are ALWAYS camelCASE and start with a _
         private string _make = null!;
         private string _model = null!;
         //Ensure all wheels entries are positive numbers and less than or equal to 12
@@ -22,7 +23,7 @@ namespace Car_Object_Example
             get { return _make; }
             set
             {
-                if(value.Trim().Length <= 0)
+                if(string.IsNullOrWhiteSpace(value))
                 {
                     throw new ArgumentNullException("Make", "Make is not specified or is empty.");
                 }
@@ -55,7 +56,7 @@ namespace Car_Object_Example
             get { return _model; }
             set
             {
-                if (value.Trim().Length <= 0)
+                if (string.IsNullOrWhiteSpace(value))
                 {
                     throw new ArgumentNullException("Model", "Model is not specified or is empty.");
                 }
@@ -67,6 +68,7 @@ namespace Car_Object_Example
             }
         }
 
+        //Properties are ALWAYS PascalCase
         public double TowingCapacity
         {
             get { return Engine.Size * 100; }
@@ -77,11 +79,7 @@ namespace Car_Object_Example
             get { return Make == "Ford"; }
         }
 
-        public int Doors
-        {
-            get; private set;
-        }
-
+        //Parameters are always and I mean ALWAYS camelCase
         public Vehicle(string make, string model, Engine engine, Transmission transmission, int wheels)
         {
             if(transmission.Type == Transmission.TypeName.Unicorn && wheels != 4)
@@ -94,40 +92,17 @@ namespace Car_Object_Example
             Transmission = transmission;
             Wheels = wheels;
         }
-
+       
+        
         public Vehicle()
         {
             Engine = new Engine();
             Transmission = new Transmission();
         }
 
-        public void SetDoor(int Doors)
-        {
-            if(Doors >= 1)
-            {
-                this.Doors = Doors;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Doors", Doors, "A vehicle must have at least one door.");
-            }
-        }
-
         public string Honk()
         {
             return "Beep";
-        }
-
-        public void SetDoors(int doors)
-        {
-            if(doors == 0)
-            {
-                throw new ArgumentOutOfRangeException("doors", doors, "You need doors!");
-            }
-            else
-            {
-                Doors = doors;
-            }
         }
 
         public string FileWrite()
@@ -137,7 +112,44 @@ namespace Car_Object_Example
         public override string ToString()
         {
             //String.Format("{0} {1}\n{2}\n{3}", Make, Model, Engine, Transmission);
-            return $"{Make} {Model}\n{Engine}\n{Transmission}";
+            return $"{Make},{Model},{Engine.Size},{Engine.HorsePower},{Engine.Cylinders},{Transmission.Type},{Transmission.Gears},{Wheels}";
+        }
+
+        public static Vehicle Parse(string text)
+        {
+            string[] values = text.Split(',');
+            if(values.Length != 8)
+            {
+                throw new FormatException($"String was not in the expected format. Incorrect number of values provided. {text}");
+            }
+            return new Vehicle(values[0],
+                                values[1],
+                                new Engine(double.Parse(values[2]), 
+                                            int.Parse(values[3]), 
+                                            int.Parse(values[4])), 
+                                new Transmission((Transmission.TypeName)Enum.Parse(typeof(Transmission.TypeName), values[5]),
+                                                  int.Parse(values[6])),
+                                int.Parse(values[7]));
+        }
+
+        public static bool TryParse(string text, out Vehicle result)
+        {
+            bool valid = false;
+            result = null;
+            try
+            {
+                result = Parse(text);
+                valid = true;
+            }
+            catch (FormatException ex)
+            {
+                throw new FormatException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"TryPase failed: {ex.Message}");
+            }
+            return valid;
         }
     }
 }

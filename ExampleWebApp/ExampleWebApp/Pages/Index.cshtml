@@ -1,0 +1,35 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    @if (string.IsNullOrWhiteSpace(Model.MyName))
+    {
+        <p>The world of Razor is currently closed :(</p>
+    }
+    else
+    {
+        <p>@Model.MyName</p>
+    }
+</div>
+
+<!--
+    helper tag: asp-for
+        the tag tie the control (the input or any other control) 
+        to the data in our Model ("code-behind") Class
+-->
+
+<form method="post">
+    <label>
+        Enter a number: <input type="text"  asp-for="number"/>
+    </label>
+    <br/>
+    <button type="submit" value="A" id="theButton">A Button</button>
+    &nbsp;&nbsp;
+    <button type="submit" value="B" id="theButton">B Button</button>
+    <br/>
+    <p style="color:red; font-weight:bold;">@Model.FeedbackMessage</p>
+</form>

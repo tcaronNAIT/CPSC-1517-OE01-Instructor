@@ -1,0 +1,33 @@
+[
+  {
+    "FirstName": "Bob",
+    "LastName": "Smith",
+    "Email": "bob@test.ca",
+    "StudentID": 1234567,
+    "ClassList": [
+      {
+        "Name": "Intro to App Dev",
+        "Description": "Learning more app dev",
+        "ClassID": "CPSC1517"
+      }
+    ]
+  },
+  {
+    "FirstName": "Fred",
+    "LastName": "Random",
+    "Email": "fred@random.com",
+    "StudentID": 234567,
+    "ClassList": [
+      {
+        "Name": "Intro to App Dev",
+        "Description": "Learning more app dev",
+        "ClassID": "CPSC1517"
+      },
+      {
+        "Name": "Intro to Database",
+        "Description": "Learn about database",
+        "ClassID": "DMIT1508"
+      }
+    ]
+  }
+]

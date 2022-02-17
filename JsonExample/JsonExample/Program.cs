@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text.Json;
 
-const string FILE_PATH = @"C:\ClassExamples\StudentList.txt";
+const string FILE_PATH = "../../../StudentList.json";
 
 List<Student> students = new List<Student>();
-students = ReadJson();
+//students = ReadJson();
 
 Student studentBob = new Student("Bob", "Smith", "bob@test.ca", 1234567);
 

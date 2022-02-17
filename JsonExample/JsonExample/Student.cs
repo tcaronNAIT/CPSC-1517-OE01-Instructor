@@ -34,7 +34,7 @@ namespace JsonExample
             get { return _studentID; }
             set { _studentID = value; }
         }
-        public List<Class> ClassList { get; set; } = null!;
+        public List<Class> ClassList { get; set; } = new List<Class>();
 
         public Student(string firstName, string lastName, string email, int studentID)
         {

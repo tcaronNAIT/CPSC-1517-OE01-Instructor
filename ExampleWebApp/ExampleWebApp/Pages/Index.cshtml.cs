@@ -18,7 +18,7 @@ namespace ExampleWebApp.Pages
         [TempData]
         public string FeedbackMessage { get; set; }
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public int number { get; set; }
 
         public void OnGet()
@@ -36,11 +36,18 @@ namespace ExampleWebApp.Pages
             }
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPostAButton()
         {
             string buttonValue = Request.Form["theButton"];
-            FeedbackMessage = buttonValue;
-            return RedirectToPage();
+            FeedbackMessage = $"The A handler button was pressed and the value was: {number}";
+            return RedirectToPage(new { number = number });
+        }
+
+        public IActionResult OnPostBButton()
+        {
+            string buttonValue = Request.Form["theButton"];
+            FeedbackMessage = $"The B handler button was pressed and the value was: {number}";
+            return RedirectToPage(new { number = number });
         }
     }
 }

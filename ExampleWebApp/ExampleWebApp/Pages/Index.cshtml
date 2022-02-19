@@ -24,12 +24,14 @@
 
 <form method="post">
     <label>
-        Enter a number: <input type="text" asp-for="number"/>
+        Enter a number: <input type="number" asp-for="number"/>
     </label>
     <br/>
-    <button type="submit" value="A" id="theButton" name="theButton">A Button</button>
+    <button type="submit" value="A Button" class="btn btn-success" id="theButton" 
+        name="theButton" asp-page-handler="AButton">A Button</button>
     &nbsp;&nbsp;
-    <button type="submit" value="B" id="theButton" name="theButton">B Button</button>
+    <button type="submit" value="B Button" class="btn btn-warning" id="theButton" 
+        name="theButton" asp-page-handler="BButton">B Button</button>
     <br/>
-    <p style="color:red; font-weight:bold;">@Model.FeedbackMessage</p>
+    <p class="text-danger bold">@Model.FeedbackMessage</p>
 </form>

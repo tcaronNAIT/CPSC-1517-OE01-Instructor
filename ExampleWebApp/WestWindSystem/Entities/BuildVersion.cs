@@ -20,6 +20,5 @@ namespace WestWindSystem.Entities
         public int Minor { get; set; }
         public int Build { get; set; }
         public DateTime ReleaseDate { get; set; }
-
     }
 }

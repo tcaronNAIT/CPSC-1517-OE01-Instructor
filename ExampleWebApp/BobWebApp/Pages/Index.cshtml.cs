@@ -56,8 +56,6 @@ namespace ExampleWebApp.Pages
             string buttonValue = Request.Form["theButton"];
             FeedbackMessage = $"The B handler button was pressed and the value was: {number}";
             return RedirectToPage(new { number = number });
-        }
-
-        
+        }  
     }
 }

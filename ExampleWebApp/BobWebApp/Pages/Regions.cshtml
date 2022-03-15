@@ -1,0 +1,17 @@
+﻿@page
+@model ExampleWebApp.Pages.RegionsModel
+@{
+	ViewData["Title"] = "Region Queries";
+}
+<h1>Region Queries</h1>
+
+<p>@Model.FeedbackMessage</p>
+
+<form method="post">
+	<label>
+		Enter Region ID:
+		<input type="number" asp-for="regionID"
+			placeholder="enter your region id number" />
+	</label>
+	<button type="submit">Fetch By ID</button>
+</form>

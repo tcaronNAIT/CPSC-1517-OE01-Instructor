@@ -40,6 +40,13 @@ namespace WestWindSystem.BLL
             return info;
         }
 
+        public List<Region> Region_List()
+        {
+            IEnumerable<Region> info = _context.Regions.OrderBy(row => row.RegionDescription);
+
+            return info.ToList();
+        }
+
         #endregion
     }
 }

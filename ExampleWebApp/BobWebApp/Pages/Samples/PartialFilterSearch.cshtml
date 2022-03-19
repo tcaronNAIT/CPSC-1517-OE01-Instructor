@@ -1,0 +1,43 @@
+﻿@page
+@model ExampleWebApp.Pages.Samples.PartialFilterSearchModel
+@{
+	ViewData["Title"] = "Partial String Table Queries";
+}
+
+<h1>Partial String Query Resulting in a Table Display</h1>
+
+<p>@Model.partialSearchFeedback</p>
+
+<form method="post">
+	<label>
+		Enter a partial Territory description:
+		<input type="text" asp-for="partialSearchText"
+			placeholder="enter your search string" />
+	</label>
+	<br />
+	<table>
+		<thead>
+			@*Used for the column titles*@
+			<tr>
+				<th>Territory ID</th>
+				<th>Description</th>
+				<th>Region ID</th>
+			</tr>
+		</thead>
+		<tbody>
+			@*Used for the table rows (details)
+				For a database query we will not know the number of rows
+				So we need to use a foreach loop to create a row for each result
+			*@
+			@foreach(var territory in Model.TerritoryResults)
+			{
+				<tr>
+					<td>@territory.TerritoryID</td>
+					<td>@territory.TerritoryDescription</td>
+					<td>@territory.RegionID</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+	<button type="submit" asp-page-handler="Search">Search Territories</button>
+</form>

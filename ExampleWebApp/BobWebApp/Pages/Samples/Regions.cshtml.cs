@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
+#region Additional Namespaces
 using WestWindSystem.BLL;
 using WestWindSystem.Entities;
+#endregion
 
 namespace ExampleWebApp.Pages
 {
@@ -19,7 +22,7 @@ namespace ExampleWebApp.Pages
         #endregion
 
         [TempData]
-        public string FeedbackMessage { get; set; }
+        public string RegionFeedback { get; set; }
 
         //BindProperty is bond to the asp-for help tag
         //Adding SupportGet = true will allow this property to be match to
@@ -41,7 +44,7 @@ namespace ExampleWebApp.Pages
                 if (regionID <= 0)
                 {
                     //If not gt0 then -> Tell the user they must provide a positive whole number
-                    FeedbackMessage = "Region ID must be a positive non-zero number.";
+                    RegionFeedback = "Region ID must be a positive non-zero number.";
                 }
                 else
                 {
@@ -52,12 +55,12 @@ namespace ExampleWebApp.Pages
                     if (regionInfo == null)
                     {
                         //If the return is a null -> Tell the user the region id was not valid.
-                        FeedbackMessage = "Region ID is not valid. No region exists with the supplied ID.";
+                        RegionFeedback = "Region ID is not valid. No region exists with the supplied ID.";
                     }
                     else
                     {
                         //If the return is not null -> Tell the user the region id and region description!
-                        FeedbackMessage = $"ID: {regionInfo.RegionID} Description: {regionInfo.RegionDescription}";
+                        RegionFeedback = $"ID: {regionInfo.RegionID} Description: {regionInfo.RegionDescription}";
                     }
                 }
             }
@@ -66,21 +69,30 @@ namespace ExampleWebApp.Pages
 
         public void OnPost()
         {
-            FeedbackMessage = "WARNING!!! No OnPost page handler found. Execution defaulted to the coded OnPost()";
+            RegionFeedback = "WARNING!!! No OnPost page handler found. Execution defaulted to the coded OnPost()";
         }
 
         public IActionResult OnPostFetch()
         {
             if (regionID < 1)
             {
-                FeedbackMessage = "Region ID must be a positive non-zero number.";
+                RegionFeedback = "Required: Region ID must be a positive non-zero number.";
             }
                 return RedirectToPage(new { regionID = regionID });
         }
 
+        public IActionResult OnPostBySelection()
+        {
+            if (regionID < 1)
+            {
+                RegionFeedback = "Required: Select a region to view.";
+            }
+            return RedirectToPage(new { regionID = selectedRegionID });
+        }
+
         public IActionResult OnPostClear()
         {
-            FeedbackMessage = "";
+            RegionFeedback = "";
             //regionID = 0;
             ModelState.Clear();
             return RedirectToPage(new {regionID = (int?)null});

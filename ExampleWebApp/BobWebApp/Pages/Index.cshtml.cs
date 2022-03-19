@@ -22,7 +22,7 @@ namespace ExampleWebApp.Pages
         public BuildVersion BuildVersionInfo { get; set; }
 
         [TempData]
-        public string FeedbackMessage { get; set; }
+        public string IndexFeedback { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int number { get; set; }
@@ -47,14 +47,14 @@ namespace ExampleWebApp.Pages
         public IActionResult OnPostAButton()
         {
             string buttonValue = Request.Form["theButton"];
-            FeedbackMessage = $"The A handler button was pressed and the value was: {number}";
+            IndexFeedback = $"The A handler button was pressed and the value was: {number}";
             return RedirectToPage(new { number = number });
         }
 
         public IActionResult OnPostBButton()
         {
             string buttonValue = Request.Form["theButton"];
-            FeedbackMessage = $"The B handler button was pressed and the value was: {number}";
+            IndexFeedback = $"The B handler button was pressed and the value was: {number}";
             return RedirectToPage(new { number = number });
         }  
     }

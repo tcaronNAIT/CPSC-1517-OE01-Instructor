@@ -5,7 +5,7 @@
 }
 <h1>Region Queries</h1>
 
-<p>@Model.FeedbackMessage</p>
+<p>@Model.RegionFeedback</p>
 
 <form method="post">
 	<label>
@@ -36,22 +36,28 @@
 			placeholder="enter your region id number" 
 			required/>
 	</label>
-	<br />
-	<button type="submit" asp-page-handler="Fetch">Fetch By ID</button>
-	<button type="submit" asp-page-handler="Clear" formnovalidate>Clear</button>
-	<br />
-	<br />
 	<label>
 		Select a Region:
 		<select asp-for="selectedRegionID">
 			<option value="0">select...</option>
 			@foreach(var region in Model.RegionList)
 			{
-				<option value="@region.RegionID">@region.RegionDescription</option>
+				if(region.RegionID == Model.regionID)
+				{
+					<option value="@region.RegionID" selected>@region.RegionDescription</option>
+				}
+				else
+				{
+					<option value="@region.RegionID">@region.RegionDescription</option>
+				}
+				
 			}
 		</select>
 	</label>
-	<button type="submit" asp-page-handler="BySelection">Fetch Selected Region</button>
+	<br />
+	<button type="submit" asp-page-handler="Fetch">Fetch By ID</button>
+	<button type="submit" asp-page-handler="BySelection" formnovalidate>Fetch Selected Region</button>
+	<button class="clear-btn" type="submit" asp-page-handler="Clear" formnovalidate>Clear</button>
 
 </form>
 

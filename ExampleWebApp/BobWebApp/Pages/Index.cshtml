@@ -14,7 +14,7 @@
     {
         <p>@Model.MyName</p>
     }
-    <br/><br/>
+    <br/>
     @if (Model.BuildVersionInfo == null)
     {
         <p style="font-weight:bold;">Build Version Unknown</p>
@@ -46,5 +46,5 @@
     <button type="submit" value="B Button" class="btn btn-warning" id="theButton" 
         name="theButton" asp-page-handler="BButton">B Button</button>
     <br/>
-    <p class="text-danger bold">@Model.FeedbackMessage</p>
+    <p class="text-danger bold">@Model.IndexFeedback</p>
 </form>

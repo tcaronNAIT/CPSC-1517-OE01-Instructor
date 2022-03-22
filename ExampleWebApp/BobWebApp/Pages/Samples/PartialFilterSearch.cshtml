@@ -38,6 +38,36 @@
 				</tr>
 			}
 		</tbody>
+		<tfoot>
+			@*used for summary table display (Example totals) and also for Pagination*@
+			<tr>
+				<td colspan="3">
+					@{
+						if(Model.Pager != null)
+						{
+							foreach(var pageRef in Model.Pager)
+							{
+								if(pageRef == Model.Pager.CurrentPage)
+								{
+									<b>@pageRef.Text</b>
+								}
+								else
+								{
+									<a title="Page @pageRef.Page"
+										asp-page="/Samples/PartialFilterSearch"
+										asp-route-currentPage="@pageRef.Page">
+										@pageRef.Text
+									</a>
+									
+									
+								}
+							}
+						}
+					}
+				</td>
+			</tr>
+		</tfoot>
 	</table>
-	<button type="submit" asp-page-handler="Search">Search Territories</button>
+	<button type="submit" asp-page-handler="Search">Search Territories</button>&nbsp;&nbsp;
+	<button type="submit" asp-page-handler="Clear">Clear</button>
 </form>

@@ -26,11 +26,24 @@ namespace WestWindSystem.BLL
         #region Queries
 
         //query by a string
-        public List<Territory> GetByPartialDescription(string partialDescription)
+        public List<Territory> GetByPartialDescription(string partialDescription, int pageNumber, int pageSize, out int totalCount)
 		{
-            return _context.Territories
+            int skipRows;
+            IEnumerable<Territory> info = _context.Territories
                                     .Where(territory => territory.TerritoryDescription.Contains(partialDescription))
-                                    .OrderBy(territory => territory.TerritoryDescription).ToList();
+                                    .OrderBy(territory => territory.TerritoryDescription);
+            //set the totalCount so it can be provided to the caller of the method.
+            totalCount = info.Count();
+            //determine the number of rows to skip (if I'm on page 4 I need to not
+            //return the first 3 pages of records.
+            //(index - 1) * pageSize
+            //PageNumber needs to be treated as a index (natural number - 1)
+            skipRows = (pageNumber - 1) * pageSize;
+            //return only the required number of rows
+            //this will be done using filters through Linq
+            //use the filter .Skip(n) to skip over n rows from the beginning of the collection
+            //use the filter .Take(n) to take only the next n rows from the collection
+            return info.Skip(skipRows).Take(pageSize).ToList();
 		}
 
         #endregion

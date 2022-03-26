@@ -1,4 +1,4 @@
-﻿@page
+﻿@page 
 @model ExampleWebApp.Pages.Samples.PartialFilterSearchModel
 @{
 	ViewData["Title"] = "Partial String Table Queries";
@@ -14,60 +14,108 @@
 		<input type="text" asp-for="partialSearchText"
 			placeholder="enter your search string" />
 	</label>
+	<button type="submit" asp-page-handler="Search">Search Territories</button>
 	<br />
-	<table>
-		<thead>
-			@*Used for the column titles*@
-			<tr>
-				<th>Territory ID</th>
-				<th>Description</th>
-				<th>Region ID</th>
-			</tr>
-		</thead>
-		<tbody>
-			@*Used for the table rows (details)
-				For a database query we will not know the number of rows
-				So we need to use a foreach loop to create a row for each result
-			*@
-			@foreach(var territory in Model.TerritoryResults)
+	<select asp-for="searchRegionID">
+		<option value="0">select a region...</option>
+		@foreach(var region in Model.RegionsList)
+		{
+		
+			if(region.RegionID == Model.searchRegionID)
 			{
-				<tr>
-					<td>@territory.TerritoryID</td>
-					<td>@territory.TerritoryDescription</td>
-					<td>@territory.RegionID</td>
-				</tr>
+				<option value="@region.RegionID" selected>@region.RegionDescription</option>
 			}
-		</tbody>
-		<tfoot>
-			@*used for summary table display (Example totals) and also for Pagination*@
-			<tr>
-				<td colspan="3">
-					@{
-						if(Model.Pager != null)
-						{
-							foreach(var pageRef in Model.Pager)
-							{
-								if(pageRef == Model.Pager.CurrentPage)
+			else
+			{
+				<option value="@region.RegionID">@region.RegionDescription</option>
+			}
+		}
+	</select>
+	<button type="submit" asp-page-handler="DDLSearch">Search Territories</button>
+	<br />
+	@if (!string.IsNullOrEmpty(Model.partialSearchText) || Model.searchRegionID >= 1)
+	{
+		if (Model.TerritoryResults.Count == 0)
+		{
+			<p style="color:deeppink; font-weight:bold; font-size:large;">
+				There are no territories matching your search request.
+			</p>
+		}
+		else 
+		{
+			<table>
+				<thead>
+					@*Used for the column titles*@
+					<tr>
+						<th>Territory ID</th>
+						<th>Description</th>
+						<th>Region ID</th>
+					</tr>
+				</thead>
+				<tbody>
+					@*Used for the table rows (details)
+						For a database query we will not know the number of rows
+						So we need to use a foreach loop to create a row for each result
+					*@
+					@foreach(var territory in Model.TerritoryResults)
+					{
+						<tr>
+							<td>@territory.TerritoryID</td>
+							<td>@territory.TerritoryDescription</td>
+							<td><select disabled="true">
+								@foreach(var region in Model.RegionsList)
 								{
-									<b>@pageRef.Text</b>
+									if(region.RegionID == territory.RegionID)
+									{
+										<option value="@region.RegionID" selected>@region.RegionDescription</option>
+									}
+									else
+									{
+										<option value="@region.RegionID">@region.RegionDescription</option>
+									}
 								}
-								else
+								</select>
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					@*used for summary table display (Example totals) and also for Pagination*@
+					<tr>
+						<td colspan="3">
+							@{
+								if(Model.Pager != null)
 								{
-									<a title="Page @pageRef.Page"
-										asp-page="/Samples/PartialFilterSearch"
-										asp-route-currentPage="@pageRef.Page">
-										@pageRef.Text
-									</a>
+									foreach(var pageRef in Model.Pager)
+									{
+										if(pageRef == Model.Pager.CurrentPage)
+										{
+											<b>@pageRef.Text</b>
+										}
+										else
+										{
+											<a title="Page @pageRef.Page"
+												asp-page="/Samples/PartialFilterSearch"
+												asp-route-currentPage="@pageRef.Page"
+												asp-route-partialSearchText="@Model.partialSearchText"
+												asp-route-searchRegionID="@Model.searchRegionID">
+												@pageRef.Text
+											</a>
 									
 									
+										}
+									}
 								}
 							}
-						}
-					}
-				</td>
-			</tr>
-		</tfoot>
-	</table>
-	<button type="submit" asp-page-handler="Search">Search Territories</button>&nbsp;&nbsp;
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		}
+	}
+	else
+	{
+		<br />
+	}
 	<button type="submit" asp-page-handler="Clear">Clear</button>
 </form>

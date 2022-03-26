@@ -39,7 +39,10 @@
                             <a asp-area="" asp-page="/Samples/TinaPage">My Page</a>
                         </li>
                         <li>
-                            <a asp-area="" asp-page="/Samples/PartialFilterSearch">Territories Search</a>
+                            <a asp-area="" asp-page="/Samples/PartialFilterSearch">Partial String Search</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-page="/Samples/Orders">Orders CRUD</a>
                         </li>
                     </ul>
                 </li>
@@ -60,8 +63,6 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)

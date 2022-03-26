@@ -9,14 +9,14 @@ using WebApp.Helpers;
 
 namespace ExampleWebApp.Pages.Samples
 {
-    public class PartialFilterSearchModel : PageModel
+    public class DDLSearchModel : PageModel
     {
         #region Private services fields and class constructor
         private readonly ILogger<PartialFilterSearchModel> _logger;
         private readonly TerritoryServices _territoryServices;
         private readonly RegionServices _regionServices;
 
-        public PartialFilterSearchModel(ILogger<PartialFilterSearchModel> logger, TerritoryServices territoryServices, RegionServices regionServices)
+        public DDLSearchModel(ILogger<PartialFilterSearchModel> logger, TerritoryServices territoryServices, RegionServices regionServices)
         {
             _logger = logger;
             _territoryServices = territoryServices;
@@ -25,17 +25,14 @@ namespace ExampleWebApp.Pages.Samples
         #endregion
 
         [TempData]
-        public string partialSearchFeedback { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string partialSearchText { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public int searchRegionID { get; set; }
+        public string DDLSearchFeedback { get; set; }
 
         public List<Territory> TerritoryResults { get; set; } = new List<Territory>();
 
-        public List<Region> RegionsList { get; set;} = new List<Region>();
+        public List<Region> RegionsList { get; set; } = new List<Region>();
+
+        [BindProperty(SupportsGet = true)]
+        public int searchRegionID { get; set; }
 
         #region Paginator
         //set the desired page size
@@ -54,8 +51,8 @@ namespace ExampleWebApp.Pages.Samples
             //OnGet ends up with a parameter (Request query string) that receives the current
             // page number. On the initial load of the page, this value will be null
             // to be null we had to add the ? after int.
-            if (!string.IsNullOrEmpty(partialSearchText) || searchRegionID >= 1)
-			{
+            if (searchRegionID >= 1)
+            {
                 //temp value for the number of results for our query
                 int totalCount;
                 //set up for using the paginator if a query is run, no need if no query
@@ -65,43 +62,28 @@ namespace ExampleWebApp.Pages.Samples
                 int pageNumber = currentPage.HasValue ? currentPage.Value : 1;
                 //set up the current state of the paginator (with the sizing)
                 PageState current = new(pageNumber, PAGE_SIZE);
-                //do our query (pick the query)
-                if (!string.IsNullOrEmpty(partialSearchText))
-                {
-                    TerritoryResults = _territoryServices.GetByPartialDescription(partialSearchText, pageNumber, PAGE_SIZE, out totalCount);
-                }
-                else
-                {
-                    TerritoryResults = _territoryServices.GetByRegionID(searchRegionID, pageNumber, PAGE_SIZE, out totalCount);
-                }
-                
+                //do our query
+                TerritoryResults = _territoryServices.GetByRegionID(searchRegionID, pageNumber, PAGE_SIZE, out totalCount);
+
+
                 Pager = new Paginator(totalCount, current);
-			}
-        }
-
-        public IActionResult OnPostSearch()
-        {
-            if (string.IsNullOrEmpty(partialSearchText))
-            {
-                partialSearchFeedback = "Required: Search string is empty.";
             }
-
-            return RedirectToPage(new { partialSearchText = partialSearchText });
         }
+
         public IActionResult OnPostDDLSearch()
         {
             if (searchRegionID < 1)
             {
-                partialSearchFeedback = "Required: Must select a region ID.";
+                DDLSearchFeedback = "Required: Region ID must be a positive non-zero number.";
             }
             return RedirectToPage(new { searchRegionID = searchRegionID });
         }
 
         public IActionResult OnPostClear()
         {
-            partialSearchFeedback = "";
+            DDLSearchFeedback = "";
             ModelState.Clear();
-            return RedirectToPage(new { PartialSearchText = (string?)null });
+            return RedirectToPage(new { searchRegionID = (int?)null });
         }
     }
 }

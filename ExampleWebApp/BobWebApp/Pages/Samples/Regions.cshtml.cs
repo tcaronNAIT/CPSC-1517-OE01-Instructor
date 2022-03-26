@@ -78,7 +78,7 @@ namespace ExampleWebApp.Pages
             {
                 RegionFeedback = "Required: Region ID must be a positive non-zero number.";
             }
-                return RedirectToPage(new { regionID = regionID });
+            return RedirectToPage(new { regionID = regionID });
         }
 
         public IActionResult OnPostBySelection()

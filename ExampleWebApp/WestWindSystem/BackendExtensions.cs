@@ -48,6 +48,18 @@ namespace WestWindSystem
                 var context = serviceProvider.GetService<WestWindContext>();
                 return new TerritoryServices(context);
             });
+
+            services.AddTransient<OrderServices>((serviceProvider) =>
+            {
+                var context = serviceProvider.GetService<WestWindContext>();
+                return new OrderServices(context);
+            });
+
+            services.AddTransient<CustomerServices>((serviceProvider) =>
+            {
+                var context = serviceProvider.GetService<WestWindContext>();
+                return new CustomerServices(context);
+            });
         }
     }
 }

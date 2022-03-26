@@ -54,6 +54,15 @@ namespace WebApp.Helpers
         #endregion
 
         #region Properties with calculated Getters
+
+        ///<summary>PageRefSize sets the page refs to display to a minimum of 5 or a maximum of 10</summary>
+        public int PageRefSize 
+        {  
+            get
+            {
+                return CurrentState.PageSize > 5 ? CurrentState.PageSize > 10 ? 10 : CurrentState.PageSize : 5;
+            } 
+        }
         ///<summary>PageCount is the total number of pages for the TotalResults</summary>
         public int PageCount { get { return (TotalItemCount / CurrentState.PageSize) + 1; } }
 
@@ -73,7 +82,13 @@ namespace WebApp.Helpers
         {
             get
             {
-                return CurrentState.CurrentPage;
+                int first;
+                int calculatedFirst = CurrentState.CurrentPage - PageRefSize + 1;
+                if (calculatedFirst > FirstPage)
+                    first = calculatedFirst;
+                else
+                    first = FirstPage;
+                return first;
             }
         }
         ///<summary>LastPageNumber is the last page number in the set of Page Links</summary>
@@ -82,7 +97,7 @@ namespace WebApp.Helpers
             get
             {
                 int last;
-                int calulatedLast = FirstPageNumber + CurrentState.PageSize - 1;
+                int calulatedLast = FirstPageNumber + PageRefSize - 1;
                 if (calulatedLast > LastPage)
                     last = LastPage;
                 else

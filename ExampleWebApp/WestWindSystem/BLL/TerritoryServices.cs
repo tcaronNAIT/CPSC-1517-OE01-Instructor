@@ -46,6 +46,17 @@ namespace WestWindSystem.BLL
             return info.Skip(skipRows).Take(pageSize).ToList();
 		}
 
+        public List<Territory> GetByRegionID (int regionID, int pageNumber, int pageSize, out int totalCount)
+		{
+            int skipRows;
+            IEnumerable<Territory> info = _context.Territories
+                                    .Where(territory => territory.RegionID == regionID)
+                                    .OrderBy(territory => territory.TerritoryDescription);
+            totalCount = info.Count();
+            skipRows = (pageNumber - 1) * pageSize;
+            return info.Skip(skipRows).Take(pageSize).ToList();
+        }
+
         #endregion
     }
 }

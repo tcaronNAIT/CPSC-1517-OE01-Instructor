@@ -1,0 +1,21 @@
+﻿@page
+@model ExampleWebApp.Pages.Samples.ProductCRUDModel
+@{
+	ViewData["Title"] = "Product CRUD";
+}
+
+<h1>Product CRUD</h1>
+
+@if (Model.HasFeedback)
+{
+	<p>@Model.Feedback</p>
+}
+@if(Model.HasError)
+{
+	<p>@Model.ErrorMessage</p>
+}
+<blockquote>Product ID: @Model.productID</blockquote>
+
+<form method="post">
+
+</form>

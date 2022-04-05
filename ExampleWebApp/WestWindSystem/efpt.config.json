@@ -18,6 +18,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Categories]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Customers]",
          "ObjectType": 0
       },
@@ -26,7 +30,15 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Products]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Regions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Suppliers]",
          "ObjectType": 0
       },
       {

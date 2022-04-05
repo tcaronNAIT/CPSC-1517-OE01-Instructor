@@ -8,7 +8,7 @@ using WestWindSystem.Entities;
 
 namespace WestWindSystem.DAL
 {
-    internal partial class WestWindContext : DbContext
+    public partial class WestWindContext : DbContext
     {
         public WestWindContext()
         {
@@ -20,9 +20,12 @@ namespace WestWindSystem.DAL
         }
 
         public virtual DbSet<BuildVersion> BuildVersions { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Region> Regions { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<Territory> Territories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,6 +53,21 @@ namespace WestWindSystem.DAL
                     .HasForeignKey(d => d.CustomerID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Orders_Customers");
+            });
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.CategoryID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Products_Categories");
+
+                entity.HasOne(d => d.Supplier)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.SupplierID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Products_Suppliers");
             });
 
             modelBuilder.Entity<Region>(entity =>

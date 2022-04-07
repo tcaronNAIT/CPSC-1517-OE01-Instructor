@@ -29,9 +29,51 @@ namespace ExampleWebApp.Pages.Samples
         [TempData]
         public string Feedback { get; set; }
 
+        [BindProperty(SupportsGet =true)]
+        public int searchCatagoryID { get; set; }
 
+        public List<Product> ProductInfo { get; set; }
+
+        [BindProperty]
+        public List<Category> CategoryList { get; set; } = new();
+
+        [BindProperty]
+        public List<Supplier> SupplierList { get; set; } = new();
         public void OnGet()
         {
+            PopulateLists();
+            if(searchCatagoryID != 0)
+            {
+                ProductInfo = _productServices.Product_CategoryProducts(searchCatagoryID);
+            }
+        }
+
+        private void PopulateLists()
+        {
+            CategoryList = _categoryServices.Category_List();
+            SupplierList = _supplierServices.Supplier_List();
+        }
+
+        public IActionResult OnPostFetch()
+        {
+            if(searchCatagoryID == 0)
+            {
+                Feedback = "Required: Search category not selected.";
+            }
+
+            return RedirectToPage(new { searchCatagoryID = searchCatagoryID });
+        }
+
+        public IActionResult OnPostClear()
+        {
+            Feedback = "";
+            ModelState.Clear();
+            return RedirectToPage(new { searchCatagoryID = (int?)null });
+        }
+
+        public IActionResult OnPostNew()
+        {
+            return RedirectToPage("/Samples/ProductCRUD");
         }
     }
 }

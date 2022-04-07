@@ -22,10 +22,22 @@ namespace WestWindSystem.BLL
         {
             _context = regContext;
         }
+
         #endregion
 
         #region Queries
+        public Product Product_GetByID(int value)
+        {
+            //Query and return the Product that matched the PK field value supplied in the value parameter
+            //Linq by default is expected to return 0, 1 or many rows
+            //WHEN your receive variable (product) expects only a SINGLE (1)
+            //Instance of the class (Product), you must "tell" Linq to return the First instance or a default value
 
+            return _context.Products
+                    .Where(x => x.ProductID == value)
+                    .FirstOrDefault();
+              
+        }
         #endregion
 
         #region Add, Update, Delete
@@ -160,6 +172,15 @@ namespace WestWindSystem.BLL
 
         }
 
+        #endregion
+
+        #region Queries
+        public List<Product> Product_CategoryProducts(int searchCatagoryID)
+        {
+            return _context.Products
+                    .Where(x => x.CategoryID == searchCatagoryID)
+                    .OrderBy(x => x.ProductName).ToList();
+        }
         #endregion
     }
 }

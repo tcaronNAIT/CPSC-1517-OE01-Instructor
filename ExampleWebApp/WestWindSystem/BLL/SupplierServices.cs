@@ -22,5 +22,13 @@ namespace WestWindSystem.BLL
             _context = regContext;
         }
         #endregion
+
+        #region Queries
+        public List<Supplier> Supplier_List()
+        {
+            return _context.Suppliers
+                    .OrderBy(x => x.CompanyName).ToList();
+        }
+        #endregion
     }
 }

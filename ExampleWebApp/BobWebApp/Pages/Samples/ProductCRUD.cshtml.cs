@@ -46,11 +46,68 @@ namespace ExampleWebApp.Pages.Samples
         public List<Category> CategoryList { get; set; }
 
         [BindProperty]
-        public List<Supplier> SuppierList { get; set; }
+        public List<Supplier> SupplierList { get; set; }
 
 
         public void OnGet()
         {
+            PopulateLists();
+            if(productID.HasValue && productID > 0)
+            {
+                ProductInfo = _productServices.Product_GetByID(productID.Value);
+            }
+        }
+        private void PopulateLists()
+        {
+            CategoryList = _categoryServices.Category_List();
+            SupplierList = _supplierServices.Supplier_List();
+        }
+
+        public IActionResult OnPostClear()
+        {
+            Feedback = "";
+            ModelState.Clear();
+            return RedirectToPage(new { productid = (int?)null });
+        }
+
+        public IActionResult OnPostSearch()
+        {
+            return RedirectToPage("/Samples/CategoryProducts");
+        }
+
+        public IActionResult OnPostNew()
+        {
+            if(ModelState.IsValid)
+            {
+                //We will always do new with user friendly error handling
+                try
+                {
+                    //call the appropriate service to try and add the new record
+                    int productNew = _productServices.Product_AddProduct(ProductInfo);
+                    Feedback = "Product was added.";
+                    return RedirectToPage(new { productID = productNew });
+                }
+                catch (Exception ex)
+                {
+                    Feedback = GetInnerException(ex);
+                    PopulateLists();
+                    return Page();
+                }
+            }
+            else
+            {
+                PopulateLists();
+                return Page();
+            }
+        }
+
+        private string GetInnerException(Exception ex)
+        {
+            while(ex.InnerException != null)
+            {
+                ex = ex.InnerException;
+            }
+            return ex.Message;
         }
     }
 }

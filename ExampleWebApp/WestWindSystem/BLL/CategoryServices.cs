@@ -21,6 +21,17 @@ namespace WestWindSystem.BLL
         {
             _context = regContext;
         }
+
+
+        #endregion
+
+        #region Queries
+        public List<Category> Category_List()
+        {
+            return _context.Categories
+                    .OrderBy(x => x.CategoryName).ToList();
+        }
+
         #endregion
     }
 }

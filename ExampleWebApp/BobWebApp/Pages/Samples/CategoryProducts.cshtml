@@ -37,6 +37,7 @@
                 <thead>
                     @*used for column titles*@
                     <tr>
+                        <th></th>
                         <th>Product</th>
                         <th>Supplier</th>
                         <th>Unit Size</th>
@@ -47,12 +48,14 @@
                     
                     @foreach (var item in Model.ProductInfo)
                     {
+                        
                         <tr>
                             <td>
                                 <a href="/Samples/ProductCRUD/@item.ProductID">
-                                    @item.ProductName
+                                    Edit
                                 </a>
                             </td>
+                            <td>@item.ProductName</td>
                             <td><select disabled="true">
                                     @foreach (var supplier in Model.SupplierList)
                                     {

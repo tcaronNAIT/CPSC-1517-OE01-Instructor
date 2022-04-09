@@ -15,6 +15,11 @@ namespace WestWindSystem.Entities
     [Index(nameof(OrderDate), Name = "OrderDate")]
     public partial class Order
     {
+        public Order()
+        {
+            Payments = new HashSet<Payment>();
+        }
+
         [Key]
         public int OrderID { get; set; }
         public int? SalesRepID { get; set; }
@@ -39,5 +44,7 @@ namespace WestWindSystem.Entities
         [ForeignKey(nameof(CustomerID))]
         [InverseProperty("Orders")]
         public virtual Customer Customer { get; set; }
+        [InverseProperty(nameof(Payment.Order))]
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

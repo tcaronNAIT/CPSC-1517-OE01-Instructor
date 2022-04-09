@@ -30,6 +30,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Payments]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Products]",
          "ObjectType": 0
       },

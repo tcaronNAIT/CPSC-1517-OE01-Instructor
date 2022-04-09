@@ -25,8 +25,15 @@
 *@
 <label>
 	Product ID:
-	<input type="text" asp-for="ProductInfo.ProductID" readonly formnovalidate/>
-</label>
+	@if(Model.ProductInfo == null)
+	{
+			<input type="text" asp-for="ProductInfo.ProductID" readonly data-val="false" value="0"/>
+		}
+		else
+		{
+			<input type="text" asp-for="ProductInfo.ProductID" readonly data-val="false" />
+		}
+	</label>
 <label>
 	Product Name:
 	<input type="text" asp-for="ProductInfo.ProductName" placeholder="product name" />
@@ -34,6 +41,7 @@
 <label>
 	Category:
 	<select asp-for="ProductInfo.CategoryID">
+		<option value="0">select...</option>
 		@foreach(var category in Model.CategoryList)
 		{
 			<option value="@category.CategoryID"
@@ -46,6 +54,7 @@
 <label>
     Supplier:
     <select asp-for="ProductInfo.SupplierID">
+		<option value="0">select...</option>
         @foreach(var item in Model.SupplierList)
         {
             <option value="@item.SupplierID" 
@@ -81,7 +90,7 @@
 		set the attribute value="true" for the checkbox
 *@
 <label>
-	Discontinued:
+	Discontinued:&nbsp;
 	<input type="checkbox" asp-for="ProductInfo.Discontinued" value="true" />
 	&nbsp;&nbsp; (discontinued if checked)
 </label>

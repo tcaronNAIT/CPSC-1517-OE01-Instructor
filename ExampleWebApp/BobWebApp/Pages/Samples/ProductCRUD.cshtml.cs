@@ -101,6 +101,58 @@ namespace ExampleWebApp.Pages.Samples
             }
         }
 
+        public IActionResult OnPostUpdate()
+        {
+            if (ModelState.IsValid)
+            {
+                //We will always do new with user friendly error handling
+                try
+                {
+                    //call the appropriate service to try and update the record
+                    int updated = _productServices.Product_UpdateProduct(ProductInfo);
+                    Feedback = $"{updated} product(s) were updated.";
+                    return RedirectToPage(new { productID = ProductInfo.ProductID });
+                }
+                catch (Exception ex)
+                {
+                    Feedback = GetInnerException(ex);
+                    PopulateLists();
+                    return Page();
+                }
+            }
+            else
+            {
+                PopulateLists();
+                return Page();
+            }
+        }
+
+        public IActionResult OnPostDelete()
+        {
+            if (ModelState.IsValid)
+            {
+                //We will always do new with user friendly error handling
+                try
+                {
+                    //call the appropriate service to try and update the record
+                    int deleted = _productServices.Product_DeleteProduct(ProductInfo);
+                    Feedback = $"{deleted} product(s) were discontinued.";
+                    return RedirectToPage(new { productID = ProductInfo.ProductID });
+                }
+                catch (Exception ex)
+                {
+                    Feedback = GetInnerException(ex);
+                    PopulateLists();
+                    return Page();
+                }
+            }
+            else
+            {
+                PopulateLists();
+                return Page();
+            }
+        }
+
         private string GetInnerException(Exception ex)
         {
             while(ex.InnerException != null)

@@ -27,10 +27,13 @@ namespace ExampleWebApp.Pages.Samples
         #endregion
 
         #region Feedback and Error Messages
+
+        [TempData]
         public string Feedback { get; set; }
 
         public bool HasFeedback => !string.IsNullOrWhiteSpace(Feedback);
 
+        [TempData]
         public string ErrorMessage { get; set; }
 
         public bool HasError => !string.IsNullOrWhiteSpace(ErrorMessage);
